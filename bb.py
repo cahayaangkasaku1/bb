@@ -74,7 +74,7 @@ chrome_options.add_argument("--remote-allow-origins=*")
 api_key = "YOUR-ANTI-CAPTCHA-API-KEY"  # Ganti dengan API Key Anda
 
 # Jalankan logika untuk beberapa email
-for _ in range(1):  # Ganti angka 5 sesuai dengan jumlah iterasi yang diinginkan
+for _ in range(3):  # Ganti angka 5 sesuai dengan jumlah iterasi yang diinginkan
     email = generate_gmail_plus_email()  # Generate email dengan Gmail plus trick
     print(f"Generated email: {email}")
     
