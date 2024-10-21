@@ -14,14 +14,18 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from anticaptchaofficial.recaptchav2proxyless import *
 
-# Path ke file email
-file_path = 'bb.txt'
 creds = Credentials.from_authorized_user_file('token.json')
 
 # Fungsi untuk menghasilkan nama acak sepanjang 10 karakter
 def generate_random_name(length=10):
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for i in range(length))
+
+# Fungsi untuk menghasilkan random Gmail plus trick email
+def generate_gmail_plus_email(base_email="mr.platra13@butyusa.com"):
+    random_string = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(10))
+    email_parts = base_email.split('@')
+    return f"{email_parts[0]}+{random_string}@{email_parts[1]}"
 
 # Fungsi untuk mendapatkan link verifikasi dari email
 def get_verification_link(creds):
@@ -67,13 +71,13 @@ def solve_recaptcha(api_key, site_key, url):
 chrome_options = Options()
 chrome_options.add_argument("--remote-allow-origins=*")
 
-# Baca email dari file bb.txt
-with open(file_path, 'r') as file:
-    emails = [line.strip() for line in file.readlines()]
-
 api_key = "YOUR-ANTI-CAPTCHA-API-KEY"  # Ganti dengan API Key Anda
 
-for email in emails:
+# Jalankan logika untuk beberapa email
+for _ in range(1):  # Ganti angka 5 sesuai dengan jumlah iterasi yang diinginkan
+    email = generate_gmail_plus_email()  # Generate email dengan Gmail plus trick
+    print(f"Generated email: {email}")
+    
     # Inisialisasi ChromeDriver untuk setiap email (agar fresh)
     driver = webdriver.Chrome(options=chrome_options)
     driver.set_window_size(1200, 1000)
