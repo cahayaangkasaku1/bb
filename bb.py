@@ -21,7 +21,7 @@ def generate_random_name(length=10):
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for i in range(length))
 
-def generate_gmail_plus_email(base_email="cac1md8@qmaul.com"):
+def generate_gmail_plus_email(base_email="jy9956j@qmaul.com"):
     random_string = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(10))
     email_parts = base_email.split('@')
     return f"{email_parts[0]}+{random_string}@{email_parts[1]}"
