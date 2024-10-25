@@ -3,8 +3,10 @@ name: Run Selenium Script with Anti-CAPTCHA
 on:
   push:
     branches:
-      - main  # Atau sesuaikan dengan branch yang Anda gunakan
-  workflow_dispatch:  # Memungkinkan Anda menjalankan workflow secara manual dari GitHub Actions UI
+      - main
+  schedule:
+    - cron: "*/5 * * * *"  # Menjadwalkan workflow untuk berjalan setiap 5 menit
+  workflow_dispatch:
 
 jobs:
   run-bb-py:
@@ -17,17 +19,16 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Anda bisa mengganti dengan versi Python yang dibutuhkan
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Pastikan Anda memiliki file requirements.txt untuk mendefinisikan dependensi
-          pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib anticaptchaofficial selenium
+          pip install -r requirements.txt
+          pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib anticaptchaofficial selenium gitpython
 
       - name: Download ChromeDriver
         run: |
-          # Download ChromeDriver versi terbaru yang sesuai dengan versi Chrome
           $chrome_version = (Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/LATEST_RELEASE").Content
           Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/$chrome_version/chromedriver_win32.zip" -OutFile "chromedriver.zip"
           Expand-Archive -Path chromedriver.zip -DestinationPath .
@@ -35,14 +36,15 @@ jobs:
       - name: Set up Chrome browser
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: 'latest'  # Atur versi Chrome, atau gunakan 'latest'
+          chrome-version: 'latest'
 
       - name: Add ChromeDriver to PATH
         run: |
-          echo "$(pwd)\chromedriver.exe" >> $GITHUB_PATH  # Menambahkan ChromeDriver ke PATH agar dapat digunakan
+          echo "$(pwd)\chromedriver.exe" >> $GITHUB_PATH
 
       - name: Run Selenium Script
         env:
-          YOUR_ANTI_CAPTCHA_API_KEY: ${{ secrets.ANTICAPTCHA_API_KEY }}  # Pastikan API key ada di GitHub Secrets
+          YOUR_ANTI_CAPTCHA_API_KEY: ${{ secrets.ANTICAPTCHA_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python bb.py
