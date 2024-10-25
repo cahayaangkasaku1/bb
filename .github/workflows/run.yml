@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
-  schedule:
-    - cron: "*/5 * * * *"  # Menjadwalkan workflow untuk berjalan setiap 5 menit
   workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'  # Menjalankan workflow setiap 5 menit
 
 jobs:
   run-bb-py:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.9'  # Sesuaikan versi Python jika dibutuhkan
 
       - name: Install dependencies
         run: |
@@ -29,6 +29,7 @@ jobs:
 
       - name: Download ChromeDriver
         run: |
+          # Mendapatkan versi ChromeDriver terbaru yang sesuai dengan Chrome
           $chrome_version = (Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/LATEST_RELEASE").Content
           Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/$chrome_version/chromedriver_win32.zip" -OutFile "chromedriver.zip"
           Expand-Archive -Path chromedriver.zip -DestinationPath .
@@ -44,7 +45,7 @@ jobs:
 
       - name: Run Selenium Script
         env:
-          YOUR_ANTI_CAPTCHA_API_KEY: ${{ secrets.ANTICAPTCHA_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YOUR_ANTI_CAPTCHA_API_KEY: ${{ secrets.ANTICAPTCHA_API_KEY }}
         run: |
           python bb.py
