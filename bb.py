@@ -158,11 +158,11 @@ for _ in range(1):  # Change to the desired number of iterations
             driver.get(verification_link)
             time.sleep(10)
 
-            display_name_input = driver.find_element(By.ID, "username")
+            display_name_input = driver.find_element(By.ID, 'displayName-uid2')
             display_name_input.send_keys(generate_random_name())
             time.sleep(3)
 
-            password_input = driver.find_element(By.ID, "password")
+            password_input = driver.find_element(By.ID, 'password-uid3')
             password_input.send_keys('giatuye123')
             password_input.send_keys(Keys.ENTER)
             time.sleep(15)
